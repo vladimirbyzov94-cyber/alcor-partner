@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Отзывы клиентов — платим за видео и историю покупки | Алькор</title>
+<meta name="description" content="Снимите короткое видео об опыте покупки квартиры через Алькор и расскажите текстом. Платим от 20 до 70 тыс. ₽ по договору ГПХ. Снимаете сами на телефон, монтаж за нами.">
+
+<!-- Шрифты в стиле alkorspb.ru -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ===== ALCOR DESIGN TOKENS (без звёзд) ===== */
+:root{
+  --canvas:#F4F4F2;
+  --surface:#FCFCFB;
+  --surface-2:#ECECEA;
+  --warm-paper:#F8F8F6;
+  --ink:#16191D;
+  --ink-soft:#565B62;
+  --ink-mute:#5F656B;
+  --line:#DCDDDE;
+  --steel:#34505F;
+  --steel-deep:#243A47;
+  --steel-glow:rgba(52,80,95,.16);
+  --orange:#FF5F33;
+  --orange-deep:#E54E26;
+  --orange-ink:#C6431C;
+  --orange-soft:rgba(255,95,51,.12);
+
+  --font-display:"Source Serif 4","PT Serif",Georgia,serif;
+  --font-ui:"Inter",-apple-system,system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+
+  --container-base:1180px;
+  --container-narrow:760px;
+  --header-h:64px;
+
+  --shadow-sm:0 1px 2px rgba(22,25,29,.04), 0 2px 8px -2px rgba(22,25,29,.06);
+  --shadow-md:0 2px 6px -1px rgba(22,25,29,.06), 0 12px 28px -10px rgba(22,25,29,.10);
+  --shadow-lg:0 8px 40px -12px rgba(22,25,29,.16);
+
+  --ease-out-quart:cubic-bezier(.25,1,.5,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--canvas);color:var(--ink);
+  font-family:var(--font-ui);font-size:clamp(16px,1.4vw,18px);line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--container-base);margin:0 auto;padding:0 24px}
+.wrap-narrow{max-width:var(--container-narrow);margin:0 auto;padding:0 24px}
+
+/* ===== HEADER (как на alkorspb.ru) ===== */
+.site-header{
+  position:sticky;top:0;z-index:50;height:var(--header-h);
+  background:rgba(244,244,242,.86);backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid transparent;transition:border-color .25s var(--ease-out-quart);
+}
+.site-header[data-scrolled="true"]{border-bottom-color:var(--line)}
+.header-row{display:flex;align-items:center;gap:24px;height:100%}
+.brand-link{display:flex;align-items:center;gap:10px}
+.brand-logo{height:34px;width:auto;display:block}
+.brand-tagline{font-size:11px;color:var(--ink-mute);letter-spacing:.04em;border-left:1px solid var(--line);padding-left:10px}
+.nav{display:flex;align-items:center;gap:6px;margin-left:8px}
+.nav a{font-size:13.5px;font-weight:500;color:var(--ink-soft);padding:8px 12px;border-radius:9999px;transition:color .2s,background .2s}
+.nav a:hover{color:var(--ink);background:var(--surface-2)}
+.header-cta{margin-left:auto;display:flex;align-items:center;gap:14px}
+.phone{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--ink);white-space:nowrap}
+.phone small{display:block;font-family:var(--font-ui);font-weight:400;font-size:10.5px;color:var(--ink-mute);letter-spacing:.02em}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-ui);font-weight:600;font-size:14.5px;
+  padding:11px 20px;border-radius:9999px;border:1px solid transparent;cursor:pointer;
+  transition:transform .18s var(--ease-out-quart),background .2s,box-shadow .2s,border-color .2s;white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:0 8px 20px -8px rgba(255,95,51,.5)}
+.btn-primary:hover{background:var(--orange-deep)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--steel);color:var(--steel)}
+@media(max-width:880px){.nav{display:none}.phone{display:none}.brand-tagline{display:none}}
+
+/* ===== утилиты ===== */
+.eyebrow{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--orange-ink);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1.5px;background:var(--orange);display:inline-block}
+.eyebrow.muted{color:var(--ink-mute)}
+.eyebrow.muted::before{background:var(--ink-mute);opacity:.5}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.015em;line-height:1.08;margin:0 0 .4em;color:var(--ink)}
+.h1{font-size:clamp(32px,6vw,56px)}
+.h2{font-size:clamp(28px,4vw,44px)}
+.h3{font-size:clamp(22px,2.4vw,30px)}
+.lead{font-size:clamp(17px,1.6vw,21px);line-height:1.5;color:var(--ink-soft);max-width:60ch}
+.mono{font-family:var(--font-mono);font-weight:700}
+section{padding:clamp(56px,8vw,104px) 0}
+
+/* ===== HERO ===== */
+.hero{padding-top:clamp(40px,6vw,72px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;opacity:.5;background:radial-gradient(60% 50% at 80% 0%, var(--orange-soft), transparent 70%)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+@media(max-width:980px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
+.hero h1{margin-top:18px}
+.hero .lead{margin-top:8px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:32px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.stat .num{font-family:var(--font-mono);font-weight:800;font-size:clamp(22px,2.4vw,30px);color:var(--steel)}
+.stat .lbl{font-size:13px;color:var(--ink-mute);max-width:18ch;line-height:1.35}
+
+/* hero card */
+.hero-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;position:relative}
+.hero-card .ribbon{position:absolute;top:16px;left:16px;z-index:2;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:var(--ink);color:#fff;padding:6px 12px;border-radius:9999px}
+.hero-card .photo{
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg, rgba(52,80,95,.92), rgba(36,58,71,.86)),radial-gradient(circle at 30% 20%, rgba(255,95,51,.5), transparent 60%);
+  display:flex;align-items:flex-end;padding:20px;color:#fff;position:relative;
+}
+.hero-card .photo .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:9999px;background:rgba(255,255,255,.9);display:grid;place-items:center;color:var(--steel);font-size:22px;box-shadow:0 10px 30px -8px rgba(0,0,0,.4)}
+.hero-card .photo .tag{font-family:var(--font-mono);font-weight:700;font-size:12.5px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:8px}
+.hero-card .body{padding:22px 24px 26px}
+.hero-card .who{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.avatar{width:42px;height:42px;border-radius:9999px;background:var(--surface-2);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;color:var(--steel);border:1px solid var(--line)}
+.hero-card .who .meta .nm{font-weight:600;font-size:15px}
+.hero-card .who .meta .sub{font-size:12.5px;color:var(--ink-mute)}
+.hero-card .sum{font-family:var(--font-mono);font-weight:800;font-size:30px;color:var(--orange-ink)}
+.hero-card .sum small{font-family:var(--font-ui);font-weight:500;font-size:13px;color:var(--ink-mute);display:block}
+.hero-card .fmt{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.fmt-chip{font-size:12px;font-weight:600;color:var(--steel);background:var(--steel-glow);padding:5px 10px;border-radius:9999px}
+
+/* ===== блок «чем это НЕ является» ===== */
+.notthis{background:var(--warm-paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.notthis .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm);margin-top:32px}
+@media(max-width:820px){.notthis .grid{grid-template-columns:1fr}}
+.notthis .cell{padding:26px 28px;border-right:1px solid var(--line)}
+.notthis .cell:last-child{border-right:0}
+@media(max-width:820px){.notthis .cell{border-right:0;border-bottom:1px solid var(--line)}.notthis .cell:last-child{border-bottom:0}}
+.notthis .cell .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:#FBE7E0;color:var(--orange-ink);font-weight:800;margin-bottom:14px}
+.notthis .cell h3{font-size:18px;margin-bottom:6px}
+.notthis .cell p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
+
+/* ===== как это работает (минимум действий) ===== */
+.steps .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:980px){.steps .wrap{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.steps .wrap{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;box-shadow:var(--shadow-sm);transition:transform .25s var(--ease-out-quart),box-shadow .25s}
+.step:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.step .n{font-family:var(--font-mono);font-weight:800;font-size:13px;color:var(--orange-ink);letter-spacing:.04em}
+.step h3{font-size:19px;margin:10px 0 8px}
+.step p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+
+/* ===== тарифная сетка по типу квартиры ===== */
+.tariff-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:14px}
+.tariff-head p{margin:0;max-width:48ch;color:var(--ink-soft)}
+.tariff-note{font-size:13px;color:var(--ink-mute);margin:0 0 30px}
+.tariff{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media(max-width:1024px){.tariff{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.tariff{grid-template-columns:1fr}}
+.tcard{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 20px;
+  display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm);
+  transition:transform .25s var(--ease-out-quart),box-shadow .25s,border-color .25s;position:relative;
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--steel)}
+.tcard .lvl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-mute)}
+.tcard .typ{font-family:var(--font-display);font-size:21px;font-weight:600;line-height:1.15}
+.tcard .price{font-family:var(--font-mono);font-weight:800;font-size:25px;color:var(--steel)}
+.tcard .price small{font-family:var(--font-ui);font-weight:500;font-size:12px;color:var(--ink-mute);display:block;margin-top:2px}
+.tcard.max{background:linear-gradient(180deg,#fff7f3,var(--surface));border-color:rgba(255,95,51,.35)}
+.tcard.max .price{color:var(--orange-ink)}
+.tcard.max .lvl{color:var(--orange-ink)}
+.tcard .bar{height:5px;border-radius:9999px;background:var(--surface-2);overflow:hidden;margin-top:6px}
+.tcard .bar i{display:block;height:100%;background:var(--orange);border-radius:9999px}
+.tcard .what{font-size:13px;color:var(--ink-soft);line-height:1.45;margin-top:4px}
+
+/* ===== формат отзыва: видео + текст, снимаете сами ===== */
+.format-detail{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-md)}
+@media(max-width:820px){.format-detail{grid-template-columns:1fr}}
+.format-detail .col{padding:clamp(26px,3.4vw,40px)}
+.format-detail .col.left{background:var(--warm-paper);border-right:1px solid var(--line)}
+@media(max-width:820px){.format-detail .col.left{border-right:0;border-bottom:1px solid var(--line)}}
+.format-detail h3{font-size:clamp(20px,2vw,26px);margin:0 0 10px}
+.format-detail p{margin:0 0 14px;color:var(--ink-soft);font-size:15.5px;line-height:1.55}
+.checklist-mini{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:11px}
+.checklist-mini li{position:relative;padding-left:32px;font-size:14.5px;color:var(--ink);line-height:1.5}
+.checklist-mini li::before{content:"";position:absolute;left:0;top:.1em;width:20px;height:20px;border-radius:6px;background:var(--steel);display:inline-block}
+.checklist-mini li::after{content:"";position:absolute;left:6px;top:6px;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.checklist-mini li span{color:var(--ink-soft)}
+.shot-list{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.shot-list li{padding:12px 14px;background:var(--surface-2);border-radius:10px;font-size:14px;color:var(--ink-soft);line-height:1.45}
+.shot-list li b{color:var(--ink);font-weight:600}
+
+/* ===== условия ===== */
+.terms{background:var(--warm-paper);border:1px solid var(--line);border-radius:22px;padding:clamp(28px,4vw,48px)}
+.terms .lead{margin-bottom:28px}
+.terms .checklist{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px}
+@media(max-width:760px){.terms .checklist{grid-template-columns:1fr}}
+.terms .item{display:flex;gap:14px;align-items:flex-start}
+.terms .item .ic{flex:none;width:24px;height:24px;border-radius:9999px;background:var(--steel);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.terms .item .t{font-size:15px;line-height:1.5}
+.terms .item .t b{font-weight:600}
+.terms .item .t span{color:var(--ink-soft)}
+.note{margin-top:26px;padding:16px 18px;border-left:3px solid var(--orange);background:var(--orange-soft);border-radius:0 12px 12px 0;font-size:14px;color:var(--ink);line-height:1.55}
+.note b{color:var(--orange-ink)}
+
+/* ===== разделение публикаций ===== */
+.publish-split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.publish-split{grid-template-columns:1fr}}
+.pub-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow-sm);position:relative}
+.pub-card .pub-tag{position:absolute;top:16px;right:16px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 11px;border-radius:9999px}
+.pub-paid{border-color:rgba(255,95,51,.35);background:linear-gradient(180deg,#fff7f3,var(--surface))}
+.pub-paid .pub-tag{background:var(--orange);color:#fff}
+.pub-free .pub-tag{background:var(--steel-glow);color:var(--steel)}
+.pub-card h3{font-size:21px;margin:6px 0 10px;font-family:var(--font-display)}
+.pub-card>p{margin:0 0 14px;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
+.pub-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.pub-list li{position:relative;padding-left:22px;font-size:14px;color:var(--ink-soft);line-height:1.45}
+.pub-list li b{color:var(--ink);font-weight:600}
+.pub-paid .pub-list li::before{content:"";position:absolute;left:0;top:.4em;width:6px;height:6px;border-radius:9999px;background:var(--orange)}
+.pub-free .pub-list li::before{content:"–";position:absolute;left:4px;top:0;color:var(--ink-mute);font-weight:700}
+.pub-note{margin-top:14px !important;padding-top:14px;border-top:1px solid var(--line);font-size:13px !important;color:var(--ink-mute) !important}
+
+/* ===== FAQ ===== */
+.faq{max-width:860px}
+.faq details{border-bottom:1px solid var(--line);padding:6px 0}
+.faq summary{list-style:none;cursor:pointer;padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;font-family:var(--font-display);font-weight:500;font-size:clamp(18px,1.8vw,22px);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{flex:none;width:30px;height:30px;border-radius:9999px;border:1px solid var(--line);display:grid;place-items:center;font-size:20px;color:var(--steel);transition:transform .25s,background .25s;font-weight:400;line-height:1}
+.faq details[open] summary .pm{transform:rotate(45deg);background:var(--orange);color:#fff;border-color:var(--orange)}
+.faq .a{padding:0 50px 24px 0;color:var(--ink-soft);font-size:15.5px;line-height:1.6}
+.faq .a p{margin:0 0 10px}.faq .a p:last-child{margin-bottom:0}
+
+/* ===== CTA ===== */
+.cta-band{background:var(--steel);color:#fff;border-radius:24px;padding:clamp(32px,5vw,56px);display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+@media(max-width:820px){.cta-band{grid-template-columns:1fr}}
+.cta-band h2{color:#fff;font-size:clamp(26px,3vw,38px)}
+.cta-band p{color:rgba(255,255,255,.82);margin:.3em 0 0;font-size:16px}
+.cta-form{display:flex;flex-direction:column;gap:12px;background:rgba(255,255,255,.08);padding:22px;border:1px solid rgba(255,255,255,.16);border-radius:16px}
+.cta-form label{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.7)}
+.cta-form input{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:12px 14px;font-family:var(--font-ui);font-size:15px;outline:none;transition:border-color .2s}
+.cta-form input::placeholder{color:rgba(255,255,255,.45)}
+.cta-form input:focus{border-color:var(--orange)}
+.cta-form .micro{font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.4}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--warm-paper);border-top:1px solid var(--line);padding:48px 0 32px}
+.footer .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+@media(max-width:820px){.footer .top{grid-template-columns:1fr 1fr}}
+.footer h4{font-family:var(--font-ui);font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-mute);margin:0 0 14px;font-weight:600}
+.footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.footer a{font-size:14px;color:var(--ink-soft)}.footer a:hover{color:var(--steel)}
+.footer .fbrand{margin-bottom:14px}
+.footer .fbrand img{height:34px;width:auto}
+.footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-mute);line-height:1.5}
+
+/* ===== reveal ===== */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease-out-quart),transform .6s var(--ease-out-quart)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-row">
+    <a class="brand-link" href="#" aria-label="Алькор — на главную">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSIzMDciIHZpZXdCb3g9IjAgMCAxMDAwIDMwNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzYzXzE0NjYpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yNS4wNjQxIDI1MS40NjZIMEw1Mi43OTc0IDEwNi4yOTNDNTcuMjkyMSA5My45Mjc2IDY5LjE1NjggODUuNjI1MiA4Mi4zMDcxIDg1LjYyNTJIODcuMDI3NUMxMDAuMzQ1IDg1LjYyNTIgMTEyLjI1OCA5NC4wNjUgMTE2LjY2NSAxMDYuNjM2TDE2MC40NzEgMjMwLjU5TDE3Ni4wMzcgMTY1LjA5NkMxODEuNTIzIDE0MS45OTUgMjAxLjk0NSAxMjUuODYxIDIyNS42ODUgMTI1Ljg2MUgyNzMuMTczVjI1MS40NzZIMjQ5LjYyVjE0OS40MTRIMjI1LjY4NUMyMTIuODk3IDE0OS40MTQgMjAxLjkwNiAxNTguMDk5IDE5OC45NTIgMTcwLjU0M0wxNzkuNjU4IDI1MS40NzZIMTU1LjUwN0wxNTUuNTE3IDI1MS40MzNMMTQyLjQ1NSAyNTEuMzg4TDk0LjQzNjggMTE0LjQyOEM5My4zMzc2IDExMS4yODggOTAuMzU0MyAxMDkuMTc4IDg3LjAyNzUgMTA5LjE3OEg4Mi4zMDcxQzc5LjAxOTUgMTA5LjE3OCA3Ni4wNTU4IDExMS4yNTggNzQuOTI3MiAxMTQuMzVMNDQuMzMyMSAxOTguNDgySDEwMS44MzZMMTA5Ljg1NCAyMjIuMDM1SDM1Ljc2N0wyNS4wNjQxIDI1MS40NjZaTTQ5Ni45MjQgMTUzLjU5NUw0NzkuNDY2IDE3OC44NTVMNDM4LjA0MiAxNzguODU1VjEyNS44NjFINDE0LjQ4OVYxNzguODU1VjE3OC44NTVWMjAyLjQwN1YyMDIuNDA4VjI1MS40NzZINDM4LjA0MlYyMDIuNDA4SDQ3NS43NjZMNTAyLjk1OSAyNTEuNDc2SDUyOS44OThMNDk3Ljg1MiAxOTMuNjc5TDUyMC40NzcgMTYwLjkzNVYxMjUuODYxSDQ5Ni45MjRWMTUzLjU5NVpNNTg2LjIyOCAyNTEuNDc2SDYwOS43OEM2MzcuOTE2IDI1MS40NzYgNjYwLjgxMSAyMjguNTgxIDY2MC44MTEgMjAwLjQ0NVYxNzYuODkyQzY2MC44MTEgMTQ4Ljc1NiA2MzcuOTE2IDEyNS44NjEgNjA5Ljc4IDEyNS44NjFINTg2LjIyOEM1NTguMDkyIDEyNS44NjEgNTM1LjE5NyAxNDguNzU2IDUzNS4xOTcgMTc2Ljg5MlYyMDAuNDQ1QzUzNS4xOTcgMjI4LjU4MSA1NTguMDkyIDI1MS40NzYgNTg2LjIyOCAyNTEuNDc2Wk01NTguNzQ5IDE3Ni44OTJDNTU4Ljc0OSAxNjEuNzQgNTcxLjA3NSAxNDkuNDE0IDU4Ni4yMjggMTQ5LjQxNEg2MDkuNzhDNjI0LjkzMyAxNDkuNDE0IDYzNy4yNTkgMTYxLjc0IDYzNy4yNTkgMTc2Ljg5MlYyMDAuNDQ1QzYzNy4yNTkgMjE1LjU5NyA2MjQuOTMzIDIyNy45MjMgNjA5Ljc4IDIyNy45MjNINTg2LjIyOEM1NzEuMDc1IDIyNy45MjMgNTU4Ljc0OSAyMTUuNTk3IDU1OC43NDkgMjAwLjQ0NVYxNzYuODkyWk0zMTYuMzYzIDEyNS44NjFIMjkyLjgxVjE2OS4wNDFWMjUxLjQ3NkgzMTYuMzYzTDM1OS41NDMgMjUxLjQ3NkMzODIuMjcxIDI1MS40NzYgNDAwLjc2IDIzMi45ODcgNDAwLjc2IDIxMC4yNTlDNDAwLjc2IDE4Ny41MyAzODIuMjcxIDE2OS4wNDEgMzU5LjU0MyAxNjkuMDQxSDMxNi4zNjNWMTI1Ljg2MVpNMzE2LjM2MyAxOTIuNTk0VjIyNy45MjNIMzU5LjU0M0MzNjkuMjg4IDIyNy45MjMgMzc3LjIwNyAyMTkuOTk0IDM3Ny4yMDcgMjEwLjI1OUMzNzcuMjA3IDIwMC41MjMgMzY5LjI4OCAxOTIuNTk0IDM1OS41NDMgMTkyLjU5NEgzMTYuMzYzWk03MDAuMDY2IDEyNS44NjFINjc2LjUxNFYzMDYuNDMySDcwMC4wNjZWMjQwLjgyMkM3MDYuNzA2IDI0Ny40OTkgNzE1LjgxOCAyNTEuNDc2IDcyNy41NDUgMjUxLjQ3Nkg3NTEuMDk3Qzc3OS4yMzMgMjUxLjQ3NiA4MDIuMTI4IDIyOC41ODEgODAyLjEyOCAyMDAuNDQ1VjE3Ni44OTJDODAyLjEyOCAxNDguNzU2IDc3OS4yMzMgMTI1Ljg2MSA3NTEuMDk3IDEyNS44NjFINzI3LjU0NUM3MTUuODE4IDEyNS44NjEgNzA2LjcwNiAxMjkuODM5IDcwMC4wNjYgMTM2LjUxNVYxMjUuODYxWk03MDAuMDY2IDE3Ni44MzRMNzAwLjA2NiAxNzYuODkyVjIwMC40NDVMNzAwLjA2NiAyMDAuNTAzQzcwMC4wOTggMjE1LjYyOSA3MTIuNDEyIDIyNy45MjMgNzI3LjU0NSAyMjcuOTIzSDc1MS4wOTdDNzY2LjI1IDIyNy45MjMgNzc4LjU3NiAyMTUuNTk3IDc3OC41NzYgMjAwLjQ0NVYxNzYuODkyQzc3OC41NzYgMTYxLjc0IDc2Ni4yNSAxNDkuNDE0IDc1MS4wOTcgMTQ5LjQxNEg3MjcuNTQ1QzcxMi40MTIgMTQ5LjQxNCA3MDAuMDk4IDE2MS43MDggNzAwLjA2NiAxNzYuODM0WiIgZmlsbD0iYmxhY2siLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAxXzYzXzE0NjYpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04NjEuOTYzIDIuNTQ3NTRlLTA2TDg0OS42OTMgMEM4NDkuNjkzIDUxLjgwMDkgODI4LjIzNSA3My42MDQ3IDc3Ni4xMjcgNzMuNjE5Nkw3NzYuMDczIDczLjYxOTZMNzExLjY1NiA3My42MTk2Vjg1Ljg4OTZMNzc2LjA3MyA4NS44ODk2Qzc3Ni4wOTEgODUuODg5NiA3NzYuMTA5IDg1Ljg4OTYgNzc2LjEyNyA4NS44ODk2QzgyOC4yMzUgODUuOTA0NCA4NDkuNjkzIDEwNy43MDggODQ5LjY5MyAxNTkuNTA5SDg2MS45NjNDODYxLjk2MyAxMDcuNzA4IDg4My40MjEgODUuOTA0NCA5MzUuNTI5IDg1Ljg4OTZIOTM1LjU4M0wxMDAwIDg1Ljg4OTZWNzMuNjE5Nkw5MzUuNTgzIDczLjYxOTZMOTM1LjUyOSA3My42MTk2Qzg4My40MjEgNzMuNjA0NyA4NjEuOTYzIDUxLjgwMDkgODYxLjk2MyAyLjU0NzU0ZS0wNloiIGZpbGw9IiNGRjVGMzMiLz4KPC9nPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzYzXzE0NjYiPgo8cmVjdCB3aWR0aD0iMTAwMCIgaGVpZ2h0PSIzMDYuNzQ4IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAxXzYzXzE0NjYiPgo8cmVjdCB3aWR0aD0iMjg4LjM0NCIgaGVpZ2h0PSIxNTkuNTA5IiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzExLjY1NikiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K" alt="Алькор" class="brand-logo" width="160" height="49" decoding="async">
+      <span class="brand-tagline">Новостройки СПб</span>
+    </a>
+    <nav class="nav">
+      <a href="#how">Как это работает</a>
+      <a href="#tariff">Сколько платим</a>
+      <a href="#format">Что снять</a>
+      <a href="#terms">Условия</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <div class="header-cta">
+      <a class="phone" href="tel:+79310009888">+7 931 000-98-88
+        <small>Независимое агентство новостроек СПб</small>
+      </a>
+      <a class="btn btn-primary" href="#apply">Снять отзыв</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Отзывы клиентов</span>
+      <h1 class="h1">Расскажите на видео,<br>как покупали квартиру</h1>
+      <p class="lead">Снимите короткое видео на телефон и напишите пару абзацев текстом — мы смонтируем и опубликуем. За готовый отзыв платим <strong>от 20 до 70 тыс. ₽</strong> по договору ГПХ. Сумма зависит от площади квартиры, а не от того, что вы скажете.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#apply">Хочу снять отзыв</a>
+        <a class="btn btn-ghost" href="#how">Как это устроено</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">20–70 тыс. ₽</div><div class="lbl">вознаграждение за видео + текст</div></div>
+        <div class="stat"><div class="num">Видео + текст</div><div class="lbl">единственный формат отзыва</div></div>
+        <div class="stat"><div class="num">Монтаж за нами</div><div class="lbl">вы только снимаете и присылаете</div></div>
+      </div>
+    </div>
+
+    <aside class="hero-card reveal">
+      <span class="ribbon">Пример отзыва</span>
+      <div class="photo">
+        <div class="play">▶</div>
+        <span class="tag">Видео · 2 мин + текст</span>
+      </div>
+      <div class="body">
+        <div class="who">
+          <div class="avatar">ИК</div>
+          <div class="meta">
+            <div class="nm">Ирина и Константин</div>
+            <div class="sub">2-ком. евро, Приморский район</div>
+          </div>
+        </div>
+        <div class="sum">45 000 ₽ <small>вознаграждение за отзыв</small></div>
+        <div class="fmt">
+          <span class="fmt-chip">снято на телефон</span>
+          <span class="fmt-chip">смонтировали мы</span>
+          <span class="fmt-chip">визуал ЖК — наш</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ ЧЕМ ЭТО НЕ ЯВЛЯЕТСЯ ============ -->
+<section class="notthis">
+  <div class="wrap-narrow" style="text-align:center">
+    <span class="eyebrow muted">Сразу честно</span>
+    <h2 class="h2" style="margin-top:14px">Это не скидка и не бонус за сделку</h2>
+    <p class="lead" style="margin:0 auto">Мы платим за готовый отзыв — видео и текст, которые используем в маркетинге. Сумма зависит от площади квартиры: для крупного объекта мы делаем развёрнутый монтаж и шире публикацию. К цене сделки это не привязано.</p>
+  </div>
+  <div class="wrap">
+    <div class="grid reveal">
+      <div class="cell">
+        <div class="ic">✕</div>
+        <h3>Не возврат части цены</h3>
+        <p>Сделка закрывается по одной цене — с отзывом или без. Ничего не «возвращаем после» в счёт квартиры.</p>
+      </div>
+      <div class="cell">
+        <div class="ic">✕</div>
+        <h3>Не всем подряд</h3>
+        <p>Участвуют те, кто сам готов сняться. Отказаться — нормально, на отношениях и условиях это не скажется.</p>
+      </div>
+      <div class="cell">
+        <div class="ic">✕</div>
+        <h3>Не оплата «за голос»</h3>
+        <p>Платим за конкретный материал: видео и текст, которые вышли в свет. Без материала оплаты не бывает.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ КАК ЭТО РАБОТАЕТ (минимум действий) ============ -->
+<section class="steps" id="how">
+  <div class="wrap-narrow" style="text-align:center;margin-bottom:40px">
+    <span class="eyebrow">Как это работает</span>
+    <h2 class="h2" style="margin-top:14px">От вас — четыре простых шага</h2>
+    <p class="lead" style="margin:14px auto 0">Мы специально сделали так, чтобы вам не пришлось ничего организовывать. Снимаете на телефон, скидываете — дальше работаем мы.</p>
+  </div>
+  <div class="wrap">
+    <div class="step reveal">
+      <div class="n">01 / отклик</div>
+      <h3>Оставляете заявку</h3>
+      <p>Короткая форма: имя, телефон, какая квартира. Перезваниваем, обсуждаем, о чём рассказать.</p>
+    </div>
+    <div class="step reveal">
+      <div class="n">02 / съёмка</div>
+      <h3>Снимаете на телефон</h3>
+      <p>Говорите на камеру 1–3 минуты. Можно у себя дома, в один дубль. Без сценария — своими словами.</p>
+    </div>
+    <div class="step reveal">
+      <div class="n">03 / текст</div>
+      <h3>Пишете пару абзацев</h3>
+      <p>Текстом в мессенджер: что выбрали, что понравилось, что бы сделали иначе. Редактуру берём на себя.</p>
+    </div>
+    <div class="step reveal">
+      <div class="n">04 / монтаж и оплата</div>
+      <h3>Монтируем и публикуем</h3>
+      <p>Добавляем визуал ЖК из каталога, монтируем, согласовываем финал. После публикации — оплата, НДФЛ 13% удерживаем мы.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ТАРИФНАЯ СЕТКА ============ -->
+<section id="tariff">
+  <div class="wrap">
+    <div class="tariff-head">
+      <div>
+        <span class="eyebrow">Сколько платим</span>
+        <h2 class="h2" style="margin-top:14px">Сумма зависит от площади квартиры</h2>
+      </div>
+      <p>Чем больше квартира — тем больше материала мы делаем и тем шире публикация. Поэтому вознаграждение растёт вместе с площадью, а не привязано к цене или формулировкам отзыва.</p>
+    </div>
+    <p class="tariff-note">Точные рамки съёмки и публикаций фиксируем в договоре до старта. Сумма — за полностью готовый отзыв (видео + текст).</p>
+
+    <div class="tariff">
+      <article class="tcard reveal">
+        <div class="lvl">Старт</div>
+        <div class="typ">Студия</div>
+        <div class="price">20 000 ₽ <small>за видео + текст</small></div>
+        <div class="bar"><i style="width:30%"></i></div>
+        <div class="what">Видео 1 мин, текст от 800 знаков. Публикация в журнале.</div>
+      </article>
+
+      <article class="tcard reveal">
+        <div class="lvl">1-ком</div>
+        <div class="typ">1-ком. евро</div>
+        <div class="price">30 000 ₽ <small>за видео + текст</small></div>
+        <div class="bar"><i style="width:45%"></i></div>
+        <div class="what">Видео 1–2 мин, текст от 1200 знаков. Журнал + соцсети.</div>
+      </article>
+
+      <article class="tcard reveal">
+        <div class="lvl">2-ком</div>
+        <div class="typ">2-ком. евро</div>
+        <div class="price">45 000 ₽ <small>за видео + текст</small></div>
+        <div class="bar"><i style="width:65%"></i></div>
+        <div class="what">Видео 2 мин, текст от 1500 знаков. Журнал + соцсети + Reels.</div>
+      </article>
+
+      <article class="tcard reveal">
+        <div class="lvl">3-ком</div>
+        <div class="typ">3-ком. евро</div>
+        <div class="price">55 000 ₽ <small>за видео + текст</small></div>
+        <div class="bar"><i style="width:82%"></i></div>
+        <div class="what">Видео 2–3 мин, развёрнутый текст, расширенная публикация.</div>
+      </article>
+
+      <article class="tcard max reveal">
+        <div class="lvl">Максимум</div>
+        <div class="typ">4-ком и больше</div>
+        <div class="price">70 000 ₽ <small>за видео + текст</small></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="what">Видео до 3 мин, большой текст, публикация месяца + таргетинг.</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ФОРМАТ: ВИДЕО + ТЕКСТ, СНИМАЕТЕ САМИ ============ -->
+<section id="format">
+  <div class="wrap">
+    <div style="text-align:center;max-width:760px;margin:0 auto 36px">
+      <span class="eyebrow">Что нужно снять</span>
+      <h2 class="h2" style="margin-top:14px">Видео + текст. И всё</h2>
+      <p class="lead" style="margin:14px auto 0">Формат один — для любого размера квартиры. Меньше выбора, меньше действий. Главное — чтобы вам было удобно.</p>
+    </div>
+
+    <div class="format-detail reveal">
+      <div class="col left">
+        <h3>Видео — снимаете только себя</h3>
+        <p>Снимаете говорящую голову на телефон, своими словами. Квартиру, стройку и планировку снимать <strong>не нужно</strong> — это новостройка, её ещё нет. Визуал ЖК (рендеры, генплан, 3D-планировку) добавляем мы из своего каталога.</p>
+        <ul class="checklist-mini">
+          <li><b>1–3 минуты</b> <span>длительность зависит от размера квартиры</span></li>
+          <li><b>Только вы в кадре</b> <span>говорящая голова, дома или где удобно</span></li>
+          <li><b>Вертикально или горизонтально</b> <span>как удобнее, мы переформатируем</span></li>
+          <li><b>Без сценария</b> <span>даём 3–4 вопроса-подсказки, остальное — ваши слова</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>Текст — пару абзацев в мессенджер</h3>
+        <p>Коротко: что выбирали, что в итоге взяли, что понравилось, что бы сделали иначе. Голосом тоже можно — мы расшифруем.</p>
+        <p style="margin-bottom:8px"><b>О чём рассказать (на выбор):</b></p>
+        <ul class="shot-list">
+          <li><b>Путь.</b> С чего начали, сколько смотрели, почему остановились на этом ЖК.</li>
+          <li><b>Цифры.</b> Цена, ипотека, платёж — что получилось по факту.</li>
+          <li><b>Личный опыт.</b> Что понравилось в работе, что напрягло, что оказалось неожиданным.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ КУДА ПУБЛИКУЕМ (разделение) ============ -->
+<section id="publish" style="background:var(--warm-paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div style="text-align:center;max-width:760px;margin:0 auto 30px">
+      <span class="eyebrow">Куда публикуем</span>
+      <h2 class="h2" style="margin-top:14px">Наши каналы — за деньги.<br>Внешние рейтинги — нет</h2>
+      <p class="lead" style="margin:14px auto 0">Мы строго разделяем платный контент и отзывы на внешних площадках. Это не формальность — так честнее и для вас, и для нас.</p>
+    </div>
+
+    <div class="publish-split reveal">
+      <div class="pub-card pub-paid">
+        <div class="pub-tag">За вознаграждение</div>
+        <h3>Наши каналы</h3>
+        <p>Смонтированный отзыв мы публикуем на наших площадках. Это и есть то, за что платим.</p>
+        <ul class="pub-list">
+          <li><b>Журнал alkorspb.ru</b> — кейс в разделе историй клиентов</li>
+          <li><b>Соцсети</b> — Telegram, ВКонтакте, Reels, VK Клипы</li>
+          <li><b>Реклама</b> — на сайте и в таргетинге, с вашего согласия</li>
+          <li><b>YouTube</b> — полное видео-интервью</li>
+        </ul>
+      </div>
+      <div class="pub-card pub-free">
+        <div class="pub-tag">Бесплатно</div>
+        <h3>Внешние рейтинги</h3>
+        <p>Отзывы на Яндекс.Картах, 2ГИС и подобных площадках — <strong>никогда не оплачиваются</strong>. Это может быть только ваш добровольный выбор.</p>
+        <ul class="pub-list">
+          <li><b>Яндекс.Карты</b> — отзыв, который вы пишете сами</li>
+          <li><b>2ГИС</b> — аналогично, на ваше усмотрение</li>
+          <li><b>Как угодно</b> — содержимое и оценку выбираете вы</li>
+        </ul>
+        <p class="pub-note">Можем напомнить, прислать ссылку — но платный материал туда не отправляем и не оплачиваем отзыв на внешних площадках.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ УСЛОВИЯ ============ -->
+<section id="terms">
+  <div class="wrap">
+    <div class="terms reveal">
+      <span class="eyebrow">Честные условия</span>
+      <h2 class="h2" style="margin-top:14px">Правила — без мелкого шрифта</h2>
+      <p class="lead">Программа устроена как обычная сделка по созданию отзыва. Вот что это значит на практике.</p>
+
+      <div class="checklist">
+        <div class="item"><div class="ic">1</div><div class="t"><b>Договор ГПХ.</b> <span>Договор гражданско-правового характера на создание отзыва и согласие на использование. Не трудовой и не подарок.</span></div></div>
+        <div class="item"><div class="ic">2</div><div class="t"><b>НДФЛ 13% — удерживаем мы.</b> <span>На руки получаете сумму за вычетом налога. Декларацию подавать не нужно.</span></div></div>
+        <div class="item"><div class="ic">3</div><div class="t"><b>Оплата после публикации.</b> <span>Вознаграждение выплачивается после выхода материала, а не в момент сделки.</span></div></div>
+        <div class="item"><div class="ic">4</div><div class="t"><b>Сумма = площадь.</b> <span>20–70 тыс. ₽ зависят от размера квартиры. Не от цены и не от того, что вы скажете.</span></div></div>
+        <div class="item"><div class="ic">5</div><div class="t"><b>Согласие на изображение.</b> <span>Отдельным документом — согласие на фото/видео в материалах Алькор.</span></div></div>
+        <div class="item"><div class="ic">6</div><div class="t"><b>Участие добровольное.</b> <span>Можно отказаться на любом этапе. На условиях сделки с квартирой это не сказывается.</span></div></div>
+        <div class="item"><div class="ic">7</div><div class="t"><b>Внешние отзывы — без оплаты.</b> <span>Отзывы на Яндекс.Картах, 2ГИС и подобных площадках мы не оплачиваем никогда. Платный материал публикуем только в своих каналах.</span></div></div>
+      </div>
+
+      <div class="note">
+        <b>Важно:</b> мы не платим за отзыв без материала. Если видео и текста нет — это не эта программа. Честность с обеих сторон — главное условие.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap faq">
+    <div style="text-align:center;margin-bottom:20px">
+      <span class="eyebrow">Вопросы</span>
+      <h2 class="h2" style="margin-top:14px">Коротко о деталях</h2>
+    </div>
+
+    <details>
+      <summary>Я никогда не снимал видео. У меня получится? <span class="pm">+</span></summary>
+      <div class="a"><p>Да. Снимаете на телефон, как обычное видео для близких. Говорите своими словами, мы даём 3–4 вопроса-подсказки. Один дубль — нормально, паузы и запинки вырежем на монтаже. Главное — чтобы вам было комфортно, остальное наша работа.</p></div>
+    </details>
+
+    <details>
+      <summary>Это правда не влияет на цену квартиры? <span class="pm">+</span></summary>
+      <div class="a"><p>Нет. Цена и условия сделки с застройщиком фиксируются отдельно. Программа отзывов — самостоятельный договор на контент, в стоимость квартиры не входит и её не меняет.</p></div>
+    </details>
+
+    <details>
+      <summary>Почему за большую квартиру платят больше? <span class="pm">+</span></summary>
+      <div class="a"><p>Потому что для крупного объекта мы делаем больше работы: развёрнутый монтаж с визуалами ЖК (рендеры, планировки, генплан из нашего каталога), нарезки под Reels и VK Клипы, расширенная публикация и таргетинг. Это объём нашего производства, а не «доплата за дорогую покупку». От вас в любом случае — только говорящая голова и текст; размер вознаграждения не зависит от того, что именно вы скажете.</p></div>
+    </details>
+
+    <details>
+      <summary>Нужно ли платить налоги самому? <span class="pm">+</span></summary>
+      <div class="a"><p>Нет. Мы — налоговый агент, удерживаем НДФЛ 13% с вознаграждения. На руки получаете сумму за вычетом налога, в бюджет платим мы. Декларацию 3-НДФЛ подавать не нужно.</p></div>
+    </details>
+
+    <details>
+      <summary>Что если я не хочу показывать лицо? <span class="pm">+</span></summary>
+      <div class="a"><p>Можно сняться без лица — руки, силуэт, голос за кадром. Это допустимый формат, обсуждается заранее. Квартиру снимать всё равно не нужно: визуал ЖК добавляем мы из каталога. Согласие на использование изображения оформляется в любом случае.</p></div>
+    </details>
+
+    <details>
+      <summary>А если я просто хочу оставить обычный отзыв? <span class="pm">+</span></summary>
+      <div class="a"><p>Обычный отзыв на Яндекс.Картах или в нашем профиле — всегда бесплатный и приветствуется. Эта программа — про создание материала (видео + текст), который мы используем в маркетинге. Без материала оплаты не бывает.</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="apply">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div>
+        <span class="eyebrow" style="color:rgba(255,255,255,.8)">Оставить заявку</span>
+        <h2 style="margin-top:14px">Готовы снять отзыв?</h2>
+        <p>Напишите, как связаться и какая у вас квартира. Пришлём вопросы-подсказки, ответим на вопросы — без давления.</p>
+      </div>
+      <form class="cta-form" onsubmit="return false">
+        <div><label for="n">Имя</label>
+          <input id="n" type="text" placeholder="Как к вам обращаться" required></div>
+        <div><label for="p">Телефон</label>
+          <input id="p" type="tel" placeholder="+7 (___) ___-__-__" required></div>
+        <button class="btn btn-primary" type="submit">Отправить заявку</button>
+        <p class="micro">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных. Заявка ни к чему не обязывает.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="fbrand"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSIzMDciIHZpZXdCb3g9IjAgMCAxMDAwIDMwNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzYzXzE0NjYpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yNS4wNjQxIDI1MS40NjZIMEw1Mi43OTc0IDEwNi4yOTNDNTcuMjkyMSA5My45Mjc2IDY5LjE1NjggODUuNjI1MiA4Mi4zMDcxIDg1LjYyNTJIODcuMDI3NUMxMDAuMzQ1IDg1LjYyNTIgMTEyLjI1OCA5NC4wNjUgMTE2LjY2NSAxMDYuNjM2TDE2MC40NzEgMjMwLjU5TDE3Ni4wMzcgMTY1LjA5NkMxODEuNTIzIDE0MS45OTUgMjAxLjk0NSAxMjUuODYxIDIyNS42ODUgMTI1Ljg2MUgyNzMuMTczVjI1MS40NzZIMjQ5LjYyVjE0OS40MTRIMjI1LjY4NUMyMTIuODk3IDE0OS40MTQgMjAxLjkwNiAxNTguMDk5IDE5OC45NTIgMTcwLjU0M0wxNzkuNjU4IDI1MS40NzZIMTU1LjUwN0wxNTUuNTE3IDI1MS40MzNMMTQyLjQ1NSAyNTEuMzg4TDk0LjQzNjggMTE0LjQyOEM5My4zMzc2IDExMS4yODggOTAuMzU0MyAxMDkuMTc4IDg3LjAyNzUgMTA5LjE3OEg4Mi4zMDcxQzc5LjAxOTUgMTA5LjE3OCA3Ni4wNTU4IDExMS4yNTggNzQuOTI3MiAxMTQuMzVMNDQuMzMyMSAxOTguNDgySDEwMS44MzZMMTA5Ljg1NCAyMjIuMDM1SDM1Ljc2N0wyNS4wNjQxIDI1MS40NjZaTTQ5Ni45MjQgMTUzLjU5NUw0NzkuNDY2IDE3OC44NTVMNDM4LjA0MiAxNzguODU1VjEyNS44NjFINDE0LjQ4OVYxNzguODU1VjE3OC44NTVWMjAyLjQwN1YyMDIuNDA4VjI1MS40NzZINDM4LjA0MlYyMDIuNDA4SDQ3NS43NjZMNTAyLjk1OSAyNTEuNDc2SDUyOS44OThMNDk3Ljg1MiAxOTMuNjc5TDUyMC40NzcgMTYwLjkzNVYxMjUuODYxSDQ5Ni45MjRWMTUzLjU5NVpNNTg2LjIyOCAyNTEuNDc2SDYwOS43OEM2MzcuOTE2IDI1MS40NzYgNjYwLjgxMSAyMjguNTgxIDY2MC44MTEgMjAwLjQ0NVYxNzYuODkyQzY2MC44MTEgMTQ4Ljc1NiA2MzcuOTE2IDEyNS44NjEgNjA5Ljc4IDEyNS44NjFINTg2LjIyOEM1NTguMDkyIDEyNS44NjEgNTM1LjE5NyAxNDguNzU2IDUzNS4xOTcgMTc2Ljg5MlYyMDAuNDQ1QzUzNS4xOTcgMjI4LjU4MSA1NTguMDkyIDI1MS40NzYgNTg2LjIyOCAyNTEuNDc2Wk01NTguNzQ5IDE3Ni44OTJDNTU4Ljc0OSAxNjEuNzQgNTcxLjA3NSAxNDkuNDE0IDU4Ni4yMjggMTQ5LjQxNEg2MDkuNzhDNjI0LjkzMyAxNDkuNDE0IDYzNy4yNTkgMTYxLjc0IDYzNy4yNTkgMTc2Ljg5MlYyMDAuNDQ1QzYzNy4yNTkgMjE1LjU5NyA2MjQuOTMzIDIyNy45MjMgNjA5Ljc4IDIyNy45MjNINTg2LjIyOEM1NzEuMDc1IDIyNy45MjMgNTU4Ljc0OSAyMTUuNTk3IDU1OC43NDkgMjAwLjQ0NVYxNzYuODkyWk0zMTYuMzYzIDEyNS44NjFIMjkyLjgxVjE2OS4wNDFWMjUxLjQ3NkgzMTYuMzYzTDM1OS41NDMgMjUxLjQ3NkMzODIuMjcxIDI1MS40NzYgNDAwLjc2IDIzMi45ODcgNDAwLjc2IDIxMC4yNTlDNDAwLjc2IDE4Ny41MyAzODIuMjcxIDE2OS4wNDEgMzU5LjU0MyAxNjkuMDQxSDMxNi4zNjNWMTI1Ljg2MVpNMzE2LjM2MyAxOTIuNTk0VjIyNy45MjNIMzU5LjU0M0MzNjkuMjg4IDIyNy45MjMgMzc3LjIwNyAyMTkuOTk0IDM3Ny4yMDcgMjEwLjI1OUMzNzcuMjA3IDIwMC41MjMgMzY5LjI4OCAxOTIuNTk0IDM1OS41NDMgMTkyLjU5NEgzMTYuMzYzWk03MDAuMDY2IDEyNS44NjFINjc2LjUxNFYzMDYuNDMySDcwMC4wNjZWMjQwLjgyMkM3MDYuNzA2IDI0Ny40OTkgNzE1LjgxOCAyNTEuNDc2IDcyNy41NDUgMjUxLjQ3Nkg3NTEuMDk3Qzc3OS4yMzMgMjUxLjQ3NiA4MDIuMTI4IDIyOC41ODEgODAyLjEyOCAyMDAuNDQ1VjE3Ni44OTJDODAyLjEyOCAxNDguNzU2IDc3OS4yMzMgMTI1Ljg2MSA3NTEuMDk3IDEyNS44NjFINzI3LjU0NUM3MTUuODE4IDEyNS44NjEgNzA2LjcwNiAxMjkuODM5IDcwMC4wNjYgMTM2LjUxNVYxMjUuODYxWk03MDAuMDY2IDE3Ni44MzRMNzAwLjA2NiAxNzYuODkyVjIwMC40NDVMNzAwLjA2NiAyMDAuNTAzQzcwMC4wOTggMjE1LjYyOSA3MTIuNDEyIDIyNy45MjMgNzI3LjU0NSAyMjcuOTIzSDc1MS4wOTdDNzY2LjI1IDIyNy45MjMgNzc4LjU3NiAyMTUuNTk3IDc3OC41NzYgMjAwLjQ0NVYxNzYuODkyQzc3OC41NzYgMTYxLjc0IDc2Ni4yNSAxNDkuNDE0IDc1MS4wOTcgMTQ5LjQxNEg3MjcuNTQ1QzcxMi40MTIgMTQ5LjQxNCA3MDAuMDk4IDE2MS43MDggNzAwLjA2NiAxNzYuODM0WiIgZmlsbD0iYmxhY2siLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAxXzYzXzE0NjYpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04NjEuOTYzIDIuNTQ3NTRlLTA2TDg0OS42OTMgMEM4NDkuNjkzIDUxLjgwMDkgODI4LjIzNSA3My42MDQ3IDc3Ni4xMjcgNzMuNjE5Nkw3NzYuMDczIDczLjYxOTZMNzExLjY1NiA3My42MTk2Vjg1Ljg4OTZMNzc2LjA3MyA4NS44ODk2Qzc3Ni4wOTEgODUuODg5NiA3NzYuMTA5IDg1Ljg4OTYgNzc2LjEyNyA4NS44ODk2QzgyOC4yMzUgODUuOTA0NCA4NDkuNjkzIDEwNy43MDggODQ5LjY5MyAxNTkuNTA5SDg2MS45NjNDODYxLjk2MyAxMDcuNzA4IDg4My40MjEgODUuOTA0NCA5MzUuNTI5IDg1Ljg4OTZIOTM1LjU4M0wxMDAwIDg1Ljg4OTZWNzMuNjE5Nkw5MzUuNTgzIDczLjYxOTZMOTM1LjUyOSA3My42MTk2Qzg4My40MjEgNzMuNjA0NyA4NjEuOTYzIDUxLjgwMDkgODYxLjk2MyAyLjU0NzU0ZS0wNloiIGZpbGw9IiNGRjVGMzMiLz4KPC9nPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzYzXzE0NjYiPgo8cmVjdCB3aWR0aD0iMTAwMCIgaGVpZ2h0PSIzMDYuNzQ4IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAxXzYzXzE0NjYiPgo8cmVjdCB3aWR0aD0iMjg4LjM0NCIgaGVpZ2h0PSIxNTkuNTA5IiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzExLjY1NikiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K" alt="Алькор" width="160" height="49"></div>
+        <p style="color:var(--ink-soft);font-size:14px;max-width:34ch;margin:0">Независимое агентство новостроек Санкт-Петербурга. Честный подбор — с плюсами и минусами.</p>
+      </div>
+      <div>
+        <h4>Программа</h4>
+        <ul>
+          <li><a href="#how">Как это работает</a></li>
+          <li><a href="#tariff">Сколько платим</a></li>
+          <li><a href="#format">Что снять</a></li>
+          <li><a href="#terms">Условия</a></li>
+          <li><a href="#faq">Вопросы</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Алькор</h4>
+        <ul>
+          <li><a href="#">Новостройки</a></li>
+          <li><a href="#">Ипотека</a></li>
+          <li><a href="#">Журнал</a></li>
+          <li><a href="#">О компании</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Связь</h4>
+        <ul>
+          <li><a href="tel:+79310009888">+7 931 000-98-88</a></li>
+          <li><a href="#">Telegram</a></li>
+          <li><a href="#">ВКонтакте</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      © Алькор, СПб. Программа отзывов клиентов — оплата создания видео и текста и использования изображения по договору ГПХ. Вознаграждение не является скидкой на квартиру, кэшбэком или возвратом части цены сделки. НДФЛ удерживается налоговым агентом.
+    </div>
+  </div>
+</footer>
+
+<script>
+// sticky header scrolled-state
+(function(){
+  const h=document.getElementById('siteHeader');let t=null;
+  const upd=()=>{const s=window.scrollY>8;h.setAttribute('data-scrolled',s?'true':'false');t=null};
+  window.addEventListener('scroll',()=>{if(!t)t=requestAnimationFrame(upd)},{passive:true});
+  upd();
+})();
+// scroll reveal
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));return}
+  const io=new IntersectionObserver((ents)=>{ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+})();
+// phone mask
+(function(){
+  const inp=document.getElementById('p');if(!inp)return;
+  const digits=v=>v.replace(/\D/g,'').replace(/^8/,'7').replace(/^(?!7)/,'7').slice(0,11);
+  const fmt=d=>{const e=d.slice(1);let s='+7';if(e.length>0)s+=' ('+e.slice(0,3);if(e.length>=3)s+=') '+e.slice(3,6);if(e.length>=6)s+='-'+e.slice(6,8);if(e.length>=8)s+='-'+e.slice(8,10);return s};
+  inp.addEventListener('focus',()=>{if(!inp.value)inp.value='+7 '});
+  inp.addEventListener('input',()=>inp.value=fmt(digits(inp.value)));
+  inp.addEventListener('focusout',()=>{if(digits(inp.value).length<11)inp.value=''});
+})();
+</script>
+</body>
+</html>

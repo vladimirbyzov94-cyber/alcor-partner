@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стань нашим партнёром — Алькор (версия 1)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --canvas: #F4F4F2;
+    --surface: #FCFCFB;
+    --surface-2: #ECECEA;
+    --ink: #16191D;
+    --ink-soft: #565B62;
+    --ink-mute: #8B9197;
+    --line: #DCDDDE;
+    --steel: #34505F;
+    --steel-deep: #243A47;
+    --alkor-coral: #FF5F33;
+    --font-display: 'PT Serif', Charter, Cambria, Georgia, 'Times New Roman', serif;
+    --font-ui: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Geist Mono', 'JetBrains Mono', 'Consolas', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-ui); background: var(--canvas); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .bg-constellation { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.9; }
+  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* Шапка */
+  header { position: relative; z-index: 5; padding: 28px 0 0; }
+  .brand-corner { display: flex; align-items: center; gap: 12px; }
+  .brand-corner .logo-mark { width: 42px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .brand-corner .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+  .brand-corner .logo-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 0.3px; }
+  .brand-corner .logo-sub { font-size: 8.5px; font-weight: 500; color: var(--ink-mute); letter-spacing: 1.6px; margin-top: 4px; text-transform: uppercase; }
+  .ver-badge { font-family: var(--font-mono); font-size: 10px; color: var(--ink-mute); background: var(--surface-2); padding: 4px 9px; border-radius: 4px; letter-spacing: 0.5px; text-decoration: none; }
+
+  /* Hero */
+  .hero { position: relative; z-index: 2; text-align: center; padding: 70px 0 50px; }
+  .epigraph { font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--steel); margin-bottom: 22px; }
+  .epigraph::before, .epigraph::after { content: "—"; color: var(--alkor-coral); margin: 0 8px; font-style: normal; }
+  .kicker { font-size: 11px; font-weight: 600; color: var(--alkor-coral); letter-spacing: 4.5px; text-transform: uppercase; margin-bottom: 18px; padding-left: 4.5px; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 7vw, 72px); font-weight: 700; color: var(--ink); letter-spacing: -0.5px; line-height: 1; }
+  .hero .lede { font-family: var(--font-ui); font-size: clamp(15px, 2vw, 18px); color: var(--ink-soft); max-width: 620px; margin: 24px auto 0; line-height: 1.6; }
+  .hero .since { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); letter-spacing: 1px; margin-top: 20px; }
+
+  /* Шаги */
+  .steps { position: relative; z-index: 2; padding: 30px 0 10px; }
+  .section-label { text-align: center; font-size: 10px; font-weight: 600; color: var(--steel); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 36px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 32px 24px 28px; position: relative; }
+  .step-num { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--ink-mute); margin-bottom: 18px; }
+  .step-icon { width: 30px; height: 17px; margin-bottom: 18px; }
+  .step-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 10px; }
+  .step-card p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
+  .step-card .hint { display: inline-block; margin-top: 12px; font-family: var(--font-mono); font-size: 11.5px; color: var(--steel); background: var(--surface-2); padding: 5px 10px; border-radius: 4px; }
+  .step-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--alkor-coral); border-radius: 8px 0 0 8px; }
+
+  /* Тёмный блок «второй путь» */
+  .alt-path { position: relative; z-index: 2; margin: 36px 0 10px; background: linear-gradient(135deg, #1B2740 0%, #0A0E1A 100%); border-radius: 10px; padding: 36px 32px; color: #fff; overflow: hidden; }
+  .alt-path::after { content: ""; position: absolute; top: 50%; right: -40px; width: 260px; height: 260px; transform: translateY(-50%); background: radial-gradient(circle, rgba(255,95,51,0.4) 0%, rgba(255,95,51,0) 65%); }
+  .alt-path-inner { position: relative; z-index: 1; max-width: 680px; }
+  .alt-path .alt-kicker { font-size: 10px; font-weight: 600; color: var(--alkor-coral); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 12px; }
+  .alt-path h2 { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 12px; }
+  .alt-path p { font-size: 15px; color: rgba(255,255,255,0.78); line-height: 1.6; }
+  .alt-path .reward { display: inline-flex; align-items: baseline; gap: 8px; margin-top: 18px; font-family: var(--font-mono); font-size: 13px; color: rgba(255,255,255,0.85); }
+  .alt-path .reward b { font-family: var(--font-display); font-size: 22px; color: #fff; }
+
+  /* Форма (блоком внизу) */
+  .cta { position: relative; z-index: 2; padding: 50px 0 20px; }
+  .cta-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 44px 40px; max-width: 620px; margin: 0 auto; }
+  .cta-card h2 { font-family: var(--font-display); font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+  .cta-card .sub { text-align: center; color: var(--ink-soft); font-size: 15px; margin-bottom: 30px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 7px; }
+  .form-group input, .form-group select { width: 100%; padding: 13px 14px; font-family: var(--font-ui); font-size: 15px; color: var(--ink); background: var(--canvas); border: 1px solid var(--line); border-radius: 6px; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--alkor-coral); box-shadow: 0 0 0 3px rgba(255,95,51,0.12); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .btn { width: 100%; padding: 15px; font-family: var(--font-ui); font-size: 15px; font-weight: 600; color: #fff; background: var(--alkor-coral); border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.3px; }
+  .btn:hover { background: #E54E25; }
+  .consent { display: flex; align-items: flex-start; gap: 9px; margin: 18px 0 4px; font-size: 12px; color: var(--ink-mute); line-height: 1.45; }
+  .consent input { width: auto; margin-top: 2px; accent-color: var(--alkor-coral); }
+  .consent a { color: var(--steel); text-decoration: underline; }
+
+  /* Юр.блок */
+  .legal { position: relative; z-index: 2; padding: 44px 0 10px; max-width: 760px; margin: 0 auto; }
+  .legal summary { font-family: var(--font-ui); font-size: 13px; font-weight: 600; color: var(--steel); cursor: pointer; letter-spacing: 0.3px; list-style: none; display: inline-flex; align-items: center; gap: 8px; }
+  .legal summary::-webkit-details-marker { display: none; }
+  .legal summary::before { content: "+"; color: var(--alkor-coral); font-weight: 700; font-size: 15px; }
+  .legal[open] summary::before { content: "–"; }
+  .legal-body { margin-top: 18px; font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; }
+  .legal-body p { margin-bottom: 10px; }
+  .legal-body b { color: var(--ink); }
+
+  /* Подвал */
+  footer { position: relative; z-index: 2; text-align: center; padding: 40px 0 60px; }
+  .footer-star { width: 44px; height: 24px; margin: 0 auto 14px; }
+  .footer-text { font-size: 11px; color: var(--ink-mute); letter-spacing: 1.6px; text-transform: uppercase; }
+  .footer-brand { font-family: var(--font-mono); font-size: 11px; color: var(--steel); letter-spacing: 2.4px; margin-top: 6px; text-transform: uppercase; }
+
+  @media (max-width: 760px) { .steps-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .cta-card { padding: 32px 22px; } .alt-path { padding: 28px 22px; } .ver-badge { right: 16px; } }
+</style>
+</head>
+<body>
+
+<svg class="bg-constellation" viewBox="0 0 1000 1414" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#34505F" stroke-width="0.8" opacity="0.14" fill="none">
+    <line x1="120" y1="180" x2="250" y2="150"/><line x1="250" y1="150" x2="380" y2="170"/>
+    <line x1="380" y1="170" x2="510" y2="130"/><line x1="510" y1="130" x2="640" y2="120"/>
+    <line x1="640" y1="120" x2="760" y2="200"/><line x1="760" y1="200" x2="820" y2="330"/>
+    <line x1="510" y1="130" x2="560" y2="95"/>
+  </g>
+  <g fill="#34505F">
+    <circle cx="120" cy="180" r="3" opacity="0.3"/><circle cx="250" cy="150" r="3.5" opacity="0.35"/>
+    <circle cx="380" cy="170" r="3" opacity="0.3"/><circle cx="640" cy="120" r="3" opacity="0.3"/>
+    <circle cx="760" cy="200" r="3" opacity="0.25"/><circle cx="820" cy="330" r="3" opacity="0.25"/>
+    <circle cx="900" cy="500" r="2" opacity="0.18"/><circle cx="80" cy="700" r="2.5" opacity="0.16"/>
+    <circle cx="950" cy="900" r="2" opacity="0.16"/><circle cx="60" cy="1100" r="2" opacity="0.16"/>
+  </g>
+  <circle cx="510" cy="130" r="5" fill="#34505F" opacity="0.42"/>
+  <circle cx="560" cy="95" r="3" fill="#FF5F33" opacity="0.6"/>
+  <line x1="510" y1="130" x2="560" y2="95" stroke="#FF5F33" stroke-width="0.8" opacity="0.25"/>
+</svg>
+
+<header>
+  <div class="wrap">
+    <span class="ver-badge" style="color:var(--alkor-coral);border:1px solid var(--alkor-coral);background:transparent;">Версия 1</span>
+    <a href="index.html" class="ver-badge">Версия 2 →</a>
+    <a href="reviews.html" class="ver-badge">Отзывы за видео →</a>
+    <div class="brand-corner">
+      <div class="logo-mark">
+        <svg width="42" height="24" viewBox="0 0 288 159" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M150 0L138 0C138 51.8 116.7 73.6 64.7 73.6L64.7 73.6L0 73.6V85.9L64.7 85.9C116.7 85.9 138 107.7 138 159.5H150C150 107.7 171.3 85.9 223.3 85.9H223.3L288 85.9V73.6L223.3 73.6L223.3 73.6C171.3 73.6 150 51.8 150 0Z" fill="#FF5F33"/>
+        </svg>
+      </div>
+      <div class="logo-wordmark">
+        <div class="logo-name">Алькор</div>
+        <div class="logo-sub">Новостройки СПб</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="epigraph">Видим то, что вы не видите</div>
+    <div class="kicker">Партнёрская программа</div>
+    <h1>Стань нашим партнёром</h1>
+    <p class="lede">Рекомендуйте клиентов — и получайте вознаграждение после сделки. Всю работу по подбору, показам и переговорам берём на себя.</p>
+    <div class="since">Алькор · с 2021 года · прямые договоры со всеми застройщиками</div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="section-label">Как это работает</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <svg class="step-icon" viewBox="0 0 288 159" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M150 0L138 0C138 51.8 116.7 73.6 64.7 73.6L64.7 73.6L0 73.6V85.9L64.7 85.9C116.7 85.9 138 107.7 138 159.5H150C150 107.7 171.3 85.9 223.3 85.9H223.3L288 85.9V73.6L223.3 73.6L223.3 73.6C171.3 73.6 150 51.8 150 0Z" fill="#FF5F33"/></svg>
+        <h3>Передайте контакт клиента</h3>
+        <p>Оставьте ФИО и номер телефона вашего клиента — или поделитесь персональной ссылкой, и он оставит заявку сам.</p>
+        <span class="hint">ФИО + телефон</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <svg class="step-icon" viewBox="0 0 288 159" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M150 0L138 0C138 51.8 116.7 73.6 64.7 73.6L64.7 73.6L0 73.6V85.9L64.7 85.9C116.7 85.9 138 107.7 138 159.5H150C150 107.7 171.3 85.9 223.3 85.9H223.3L288 85.9V73.6L223.3 73.6L223.3 73.6C171.3 73.6 150 51.8 150 0Z" fill="#FF5F33"/></svg>
+        <h3>Всю работу берём на себя</h3>
+        <p>Подбор, показы, переговоры, ипотека и документы — до заключения сделки. Вам не нужно вникать в процесс.</p>
+        <span class="hint">0 рутины</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <svg class="step-icon" viewBox="0 0 288 159" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M150 0L138 0C138 51.8 116.7 73.6 64.7 73.6L64.7 73.6L0 73.6V85.9L64.7 85.9C116.7 85.9 138 107.7 138 159.5H150C150 107.7 171.3 85.9 223.3 85.9H223.3L288 85.9V73.6L223.3 73.6L223.3 73.6C171.3 73.6 150 51.8 150 0Z" fill="#FF5F33"/></svg>
+        <h3>Быстрые выплаты после сделки</h3>
+        <p>Вознаграждение перечисляем после регистрации сделки. Прозрачно и в срок.</p>
+        <span class="hint">до 3 рабочих дней</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="alt-path">
+    <div class="alt-path-inner">
+      <div class="alt-kicker">Второй путь</div>
+      <h2>Или приведите нового клиента</h2>
+      <p>Порекомендуйте нас знакомому, который ищет новостройку в Петербурге. Он оставит заявку и укажет вас — и после его сделки вы оба получите бонус.</p>
+      <div class="reward"><b>+ кэшбэк</b> обоим после сделки</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-card">
+      <h2>Оставить заявку</h2>
+      <p class="sub">Заполните форму — менеджер свяжется с вами в течение дня</p>
+      <form onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Заявка отправлена ✓'; this.querySelector('.btn').disabled=true;">
+        <div class="form-row">
+          <div class="form-group"><label>Ваше имя</label><input type="text" placeholder="Как к вам обращаться" required></div>
+          <div class="form-group"><label>Ваш телефон</label><input type="tel" placeholder="+7 ___ ___-__-__" required></div>
+        </div>
+        <div class="form-group"><label>Как хотите участвовать</label><select><option>Передать контакт клиента</option><option>Привести нового клиента (реферальная ссылка)</option><option>Пока консультируюсь, расскажите подробнее</option></select></div>
+        <div class="form-row">
+          <div class="form-group"><label>ФИО клиента (если есть)</label><input type="text" placeholder="Фамилия Имя Отчество"></div>
+          <div class="form-group"><label>Телефон клиента (если есть)</label><input type="tel" placeholder="+7 ___ ___-__-__"></div>
+        </div>
+        <label class="consent"><input type="checkbox" required><span>Подтверждаю, что получил(а) согласие клиента на обработку его персональных данных и передачу их ООО «Алькор». С <a href="#">политикой обработки ПД</a> и <a href="#">условиями партнёрской программы</a> ознакомлен(а).</span></label>
+        <button class="btn" type="submit">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <details class="legal">
+    <summary>Как это устроено юридически и почему это законно</summary>
+    <div class="legal-body">
+      <p><b>Согласие на персональные данные (152-ФЗ).</b> Передавать чужой номер телефона третьим лицам можно только с согласия самого клиента. Поэтому мы просим вас либо получить устное согласие клиента (вы подтверждаете это галочкой в форме), либо поделиться персональной ссылкой — тогда клиент сам оставляет заявку и даёт согласие на обработку ПД.</p>
+      <p><b>Как оформляется выплата.</b> Вознаграждение выплачивается по договору гражданско-правового характера (ГПХ) на оказание информационных/рекламных услуг после факта состоявшейся сделки. Алькор выступает налоговым агентом: с суммы удерживается НДФЛ 13%, отчётность подаётся в ФНС. Для оформления понадобятся паспортные данные и СНИЛС.</p>
+      <p><b>Альтернатива без налогов для вас.</b> Если вы сами покупаете квартиру у нас и рекомендуете друга, который тоже покупает — вознаграждение можно оформить как скидку/кэшбэк на вашу сделку. Скидка не является доходом и не облагается НДФЛ.</p>
+      <p><b>Выплата после сделки, а не за лид.</b> Мы платим за результат — зарегистрированную сделку, а не просто за переданный контакт.</p>
+      <p><b>Размер вознаграждения</b> зависит от застройщика и типа объекта и фиксируется в приложении к договору ГПХ до старта работы.</p>
+    </div>
+  </details>
+</section>
+
+<footer>
+  <svg class="footer-star" viewBox="0 0 288 159" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M150 0L138 0C138 51.8 116.7 73.6 64.7 73.6L64.7 73.6L0 73.6V85.9L64.7 85.9C116.7 85.9 138 107.7 138 159.5H150C150 107.7 171.3 85.9 223.3 85.9H223.3L288 85.9V73.6L223.3 73.6L223.3 73.6C171.3 73.6 150 51.8 150 0Z" fill="#34505F"/></svg>
+  <div class="footer-text">Рекомендуйте тех, кому доверяете</div>
+  <div class="footer-brand">alkorspb.ru</div>
+</footer>
+
+</body>
+</html>
